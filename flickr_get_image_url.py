@@ -50,7 +50,7 @@ class Flickr(object):
 
     # 外部ファイルからスニペットを取ってくる
     def get_snippet(self):
-        input_snippet_file = open('snippet.txt')
+        input_snippet_file = open('/home/ry0/workspace/Python/flickr_get_image_url/snippet.txt')
         snippet = input_snippet_file.read()
         input_snippet_file.close()
         return snippet
@@ -79,24 +79,44 @@ class Flickr(object):
                 pass
         return result
 
+    def check_exist_image(self, photo_id, hope_image_size_index):
+        flag = False
+        for i in reversed(range(0, hope_image_size_index)):
+            image_url = self.get_url_from_photo_id(photo_id, self.image_size[i])
+            if (image_url != None):
+                print self.image_size[hope_image_size_index] + "のサイズは存在しません．" + self.image_size[i] + "サイズを取得します．"
+                self.snippet = self.snippet.replace(self.image_snippet[hope_image_size_index], image_url)
+                flag = True
+                break
+
+        if (flag == False):
+            print "指定したIDの画像は存在しません"
+            exit()
+
     # 指定したスニペットから指定した画像サイズのURLに置換
     def convert_snippet(self, photo_id):
-        for (num_image_size, num_image_snippet) in zip(self.image_size, self.image_snippet):
-
-            if self.snippet.find(num_image_snippet)!=-1:
-                image_url = f.get_url_from_photo_id(photo_id, num_image_size)
-                if(image_url == None):
-                    print "指定したIDの画像は存在しません"
-                    exit()
+        # for (num_image_size, num_image_snippet) in zip(self.image_size, self.image_snippet):
+        for i in range(0, 11):
+            if (self.snippet.find(self.image_snippet[i])!=-1):
+                image_url = self.get_url_from_photo_id(photo_id, self.image_size[i])
+                if (image_url == None):
+                    # image_url = self.get_url_from_photo_id(photo_id, 'Original')
+                    # if(image_url == None):
+                    #   print "指定したIDの画像は存在しません"
+                    #   exit()
+                    # else :
+                    #   print str(num_image_size) + "のサイズは存在しません．オリジナルサイズを取得します"
+                    #   self.snippet = self.snippet.replace(num_image_snippet, image_url)
+                    self.check_exist_image(photo_id, i)
                 else:
-                    print str(num_image_size) + "の画像を取得中..."
-                    self.snippet = self.snippet.replace(num_image_snippet, image_url)
+                    print self.image_size[i] + "の画像を取得中..."
+                    self.snippet = self.snippet.replace(self.image_snippet[i], image_url)
         return self.snippet
 
 
 if __name__ == '__main__':
     # APIキーを格納したファイルを読み込み
-    f = Flickr('./FlickrAPI.conf')
+    f = Flickr('/home/ry0/workspace/Python/flickr_get_image_url/FlickrAPI.conf')
     #IDを打たせる
     print '画像IDを入力'
     Flickr_ID = raw_input('>>>  ')
