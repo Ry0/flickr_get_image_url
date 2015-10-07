@@ -61,6 +61,15 @@ python flickr_get_image_url.py
 
 実行すると...
 
+```bash
+python flickr_get_image_url.py 
+画像IDを入力
+>>>  19465393524
+Largeの画像を取得中...
+Large 1600の画像を取得中...
+クリップボードにコピーしました
+```
+
 ```html
 <a class="swipebox" href="https://farm1.staticflickr.com/342/19465393524_ff7393bd75_h.jpg" title="">
   <img class="center image-effect" src="https://farm1.staticflickr.com/342/19465393524_545c40623d_b.jpg">
