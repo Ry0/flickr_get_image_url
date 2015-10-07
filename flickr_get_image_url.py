@@ -50,7 +50,7 @@ class Flickr(object):
 
     # 外部ファイルからスニペットを取ってくる
     def get_snippet(self):
-        input_snippet_file = open('snippet.txt')
+        input_snippet_file = open('/home/ry0/workspace/Python/flickr_get_image_url/snippet.txt')
         snippet = input_snippet_file.read()
         input_snippet_file.close()
         return snippet
@@ -96,7 +96,7 @@ class Flickr(object):
 
 if __name__ == '__main__':
     # APIキーを格納したファイルを読み込み
-    f = Flickr('./FlickrAPI.conf')
+    f = Flickr('/home/ry0/workspace/Python/flickr_get_image_url/FlickrAPI.conf')
     #IDを打たせる
     print '画像IDを入力'
     Flickr_ID = raw_input('>>>  ')
