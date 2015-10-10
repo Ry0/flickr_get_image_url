@@ -79,12 +79,15 @@ class Flickr(object):
                 pass
         return result
 
+    # 指定したサイズの画像があるかをチェックしてなかったら指定したサイズよりも小さいサイズでないかを確認する
+    # それでもなかったらプログラム終了
     def check_exist_image(self, photo_id, hope_image_size_index):
         flag = False
         for i in reversed(range(0, hope_image_size_index)):
             image_url = self.get_url_from_photo_id(photo_id, self.image_size[i])
             if (image_url != None):
                 print self.image_size[hope_image_size_index] + "のサイズは存在しません．" + self.image_size[i] + "サイズを取得します．"
+                print image_url + "\n"
                 self.snippet = self.snippet.replace(self.image_snippet[hope_image_size_index], image_url)
                 flag = True
                 break
@@ -100,26 +103,22 @@ class Flickr(object):
             if (self.snippet.find(self.image_snippet[i])!=-1):
                 image_url = self.get_url_from_photo_id(photo_id, self.image_size[i])
                 if (image_url == None):
-                    # image_url = self.get_url_from_photo_id(photo_id, 'Original')
-                    # if(image_url == None):
-                    #   print "指定したIDの画像は存在しません"
-                    #   exit()
-                    # else :
-                    #   print str(num_image_size) + "のサイズは存在しません．オリジナルサイズを取得します"
-                    #   self.snippet = self.snippet.replace(num_image_snippet, image_url)
+                    # 指定したサイズの画像があるかをチェック
                     self.check_exist_image(photo_id, i)
                 else:
                     print self.image_size[i] + "の画像を取得中..."
+                    print image_url + "\n"
                     self.snippet = self.snippet.replace(self.image_snippet[i], image_url)
         return self.snippet
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # APIキーを格納したファイルを読み込み
     f = Flickr('./FlickrAPI.conf')
     #IDを打たせる
-    print '画像IDを入力'
-    Flickr_ID = raw_input('>>>  ')
+    print "画像IDを入力"
+    Flickr_ID = raw_input(">>>  ")
+    print ""
 
     # 目的のスニペットをゲット
     f.convert_snippet(Flickr_ID)
