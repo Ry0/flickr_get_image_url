@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import requests
-import sys
+import os.path
 import ConfigParser
 import xml.dom.minidom as md
 from sketch_export import *
 
-class Flickr(object):
 
+class Flickr(object):
     def __init__(self, api_conf):
         self.api_url = 'https://api.flickr.com/services/rest/'
         # FlickrのAPI_KEYを外部ファイルから取ってくる
@@ -28,18 +28,18 @@ class Flickr(object):
                               "[Large 2048]",
                               "[Original]"]
         # Flickrから取ってくるときの画像サイズ指定用
-        self.image_size    = ["Square",
-                              "Large Square",
-                              "Thumbnail",
-                              "Small",
-                              "Small 320",
-                              "Medium",
-                              "Medium 640",
-                              "Medium 800",
-                              "Large",
-                              "Large 1600",
-                              "Large 2048",
-                              "Original"]
+        self.image_size = ["Square",
+                           "Large Square",
+                           "Thumbnail",
+                           "Small",
+                           "Small 320",
+                           "Medium",
+                           "Medium 640",
+                           "Medium 800",
+                           "Large",
+                           "Large 1600",
+                           "Large 2048",
+                           "Original"]
 
     # 外部ファイルからAPI_KEYを取ってくる
     def get_api_param(self, api_conf):
@@ -50,7 +50,8 @@ class Flickr(object):
 
     # 外部ファイルからスニペットを取ってくる
     def get_snippet(self):
-        input_snippet_file = open('./snippet.txt')
+        python_script_path = os.path.abspath(os.path.dirname(__file__))
+        input_snippet_file = open(python_script_path + "/snippet.txt")
         snippet = input_snippet_file.read()
         input_snippet_file.close()
         return snippet
@@ -100,7 +101,7 @@ class Flickr(object):
     def convert_snippet(self, photo_id):
         # for (num_image_size, num_image_snippet) in zip(self.image_size, self.image_snippet):
         for i in range(0, 11):
-            if (self.snippet.find(self.image_snippet[i])!=-1):
+            if (self.snippet.find(self.image_snippet[i]) != -1):
                 image_url = self.get_url_from_photo_id(photo_id, self.image_size[i])
                 if (image_url == None):
                     # 指定したサイズの画像があるかをチェック
@@ -114,7 +115,8 @@ class Flickr(object):
 
 if __name__ == "__main__":
     # APIキーを格納したファイルを読み込み
-    f = Flickr('./FlickrAPI.conf')
+    python_script_path = os.path.abspath(os.path.dirname(__file__))
+    f = Flickr(python_script_path + "/FlickrAPI.conf")
     #IDを打たせる
     print "画像IDを入力"
     Flickr_ID = raw_input(">>>  ")

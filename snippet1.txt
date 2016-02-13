@@ -1,0 +1,4 @@
+<a class="swipebox" href="[Large 1600]" title="">
+  <img class="center image-effect" src="[Large]">
+</a>
+%image
