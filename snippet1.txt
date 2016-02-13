@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="col span_6">
+    <a class="swipebox img-two-col-left" href="[Large 1600]" title="">
+      <img class="image-effect" src="[Large]">
+    </a>
+  </div>
+  <div class="col span_6">
+    <a class="swipebox img-two-col-right" href="[Large 1600]" title="">
+      <img class="center image-effect" src="[Large]">
+    </a>
+  </div>
+</div>
