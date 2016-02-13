@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import requests
+import sys
 import os.path
 import ConfigParser
 import xml.dom.minidom as md
@@ -8,7 +9,7 @@ from sketch_export import *
 
 
 class Flickr(object):
-    def __init__(self, api_conf):
+    def __init__(self, api_conf, argvs, argc):
         self.api_url = 'https://api.flickr.com/services/rest/'
         # FlickrのAPI_KEYを外部ファイルから取ってくる
         self.api_key = self.get_api_param(api_conf)
@@ -48,10 +49,21 @@ class Flickr(object):
         api_key = config.get('connect_params', 'API_KEY', 1)
         return api_key
 
+    def input_arg(self, argvs, argc):
+        if (argc == 1):   # 引数が足りない場合は、その旨を表示
+            argv = '/snippet.txt'
+        elif (argc == 2):
+            argv = '/snippet' + argvs[1] + '.txt'
+        else:
+            print "引数を正しく与えてください"
+            quit()        # プログラムの終了
+        # 引数でとったディレクトリの文字列をリターン
+        return argv
+
     # 外部ファイルからスニペットを取ってくる
     def get_snippet(self):
         python_script_path = os.path.abspath(os.path.dirname(__file__))
-        input_snippet_file = open(python_script_path + "/snippet.txt")
+        input_snippet_file = open(python_script_path + self.input_arg(argvs, argc))
         snippet = input_snippet_file.read()
         input_snippet_file.close()
         return snippet
@@ -114,9 +126,11 @@ class Flickr(object):
 
 
 if __name__ == "__main__":
+    argvs = sys.argv   # コマンドライン引数を格納したリストの取得
+    argc = len(argvs)  # 引数の個数
     # APIキーを格納したファイルを読み込み
     python_script_path = os.path.abspath(os.path.dirname(__file__))
-    f = Flickr(python_script_path + "/FlickrAPI.conf")
+    f = Flickr(python_script_path + "/FlickrAPI.conf", argvs, argc)
     #IDを打たせる
     print "画像IDを入力"
     Flickr_ID = raw_input(">>>  ")
